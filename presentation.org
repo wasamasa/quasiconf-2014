@@ -1,0 +1,375 @@
+#+TITLE: Emacs Lisp or Why Emacs' Extension Language Is Worth Another Look
+#+AUTHOR: Vasilij Schneidermann
+#+DATE: August 24, 2014
+#+OPTIONS: H:2
+#+BEAMER_THEME: Rochester
+#+BEAMER_COLOR_THEME: structure[RGB={87,83,170}]
+#+LATEX_HEADER: \hypersetup{pdfauthor="Vasilij Schneidermann", pdftitle="Emacs Lisp or Why Emacs' Extension Language Is Worth Another Look", colorlinks, linkcolor=black, urlcolor=blue}
+#+LATEX: \AtBeginSection{\frame{\sectionpage}}
+
+* Introduction
+
+** Speaker
+
+- Vasilij Schneidermann, 22
+- Information systems student
+- Working at bevuta IT, Cologne
+- [[v.schneidermann@gmail.com]]
+- https://github.com/wasamasa
+
+** Preliminary notes
+
+- Pretty subjective at times
+  # Will try to keep it to a minimum though
+- Prepare for dogfooding
+
+** What this talk will be about
+
+- Emacs features
+- Demonstrations of what Emacs can do
+  # Most of them are backed up by own code
+- The community
+
+** What this talk will not be about
+
+- Teaching you how to use Emacs
+- Editor wars
+  # Those are pretty pointless anyways
+
+  # Quick voting to determine number of people using Emacs, people who
+  # customized their Emacs and people who wrote non-trivial Emacs Lisp
+
+* How I got started with Emacs and Emacs Lisp
+
+** How I got started with Emacs and Emacs Lisp
+
+- Started out with switching text editors constantly
+- Became curious, learned Vim
+  # This happened after documenting how to set up a Linux server which
+  # obviously requires knowing the basics of a text editor
+- Wanted more, tried Emacs
+  # Just editing text isn't enough and there's a finite number of
+  # finished software using Vim bindings...
+- Stuck with Emacs, didn't want to learn Emacs Lisp at first
+  # See next section
+- Curiosity took over, read sources of small packages
+  # better-defaults.el is a pretty good one to start with, try looking
+  # newly created content on Github or new MELPA/Marmalade packages
+  # since those tend to start out rather small
+- Learned to prefer reading source over docs
+  # Although there are docs and a small description in the headers,
+  # it's often too little to get how exactly the package works and is
+  # intended to be extended
+- Small fixes at first, wrote own packages later
+  # Customizing a setting, adding hooks, patching functions in your
+  # own configuration, patching Emacs internals there, wrapping it up
+  # to a package, actually releasing it, ...
+- Eventually dug in deep enough to hold a talk about it
+  # I've realized I can't just do this alone and need help
+
+* Why I didn't want to learn Emacs Lisp at first
+
+** It's a Lisp, Lisps are functional languages!
+
+- Lisp doesn't mean it's a functional language
+  # Haskell would be an example of a purely functional language and
+  # offers many advanced constructs, Clojure comes close to most of
+  # its benefits though thanks to its lazy sequences and immutable
+  # types
+- Emacs Lisp itself is rather procedural
+  # With cl-lib.el you get many Common Lisp goodies, like the famous
+  # LOOP macro
+- [[https://github.com/magnars/dash.el][dash.el]] helps if you want it to be more functional
+  # its list processing functions have been mostly taken from Scheme
+  # and Clojure, such as -if-let* (and-let from Scheme) and -juxt
+  # (juxt from Clojure)
+
+** It's a Lisp, therefore it must be useless!
+
+- Emacs is (probably) the largest open Lisp project out there
+  # That alone is pretty impressive considering it's going strong for
+  # over thirty years and spans technology breakthroughs, such as
+  # display servers and CUA
+- There's a few thousand packages one can install
+  # You're very likely to find most of what you desire to have in the
+  # community repositories, there's more than enough people who get by
+  # with that level of Emacs proficiency
+
+** So, there must be nothing useful left to write anymore!
+
+- There's more than enough things lacking
+  # See the suggestions section or just anything that's not
+  # implemented well enough according to your own personal opinion
+- Add your own ideas and you'll have something useful to write
+  # See the section for workflow and productivity improvements
+
+** I want to learn a real Lisp first!
+
+- It is a real Lisp and a good starting point
+  # This entire "real Lisp" is a joke anyways, considering the wealth
+  # of blog posts declaring the primary language the author uses as an
+  # "acceptable Lisp"
+- If you can't decide which one to go for, learn it first, then
+  proceed depending on how much you like it
+  # Which is exactly how I've went ahead, I'll most likely learn
+  # Common Lisp next
+
+** I don't want to learn a completely different language just to customize a text editor!
+
+- Starting out is very simple
+  # You might assume something like (setq inhibit-splash-screen t) is
+  # a special command to enable a setting, but it's just another part
+  # of the language you can use in different contexts
+- Transition to more complex code is gradual
+  # See the route described in the section about how I switched over
+  # to Emacs, you'll likely go for a similiar one
+
+** The existing tutorials and the manual are too intimidating, I want something more approachable!
+
+  # With existing tutorials I'm refering to the Emacs manual (~600
+  # pages), the Emacs Lisp manual (~1000 pages) and the Introduction
+  # to Emacs Lisp (~250 pages)
+- Introduction to reading code and customization:
+  [[http://sachachua.com/blog/series/read-lisp-tweak-emacs/]]
+  # Start with this one if you don't quite get how to figure out and
+  # discover things in Emacs yet as it tackles exactly that topic,
+  # then proceeds with how to read Emacs Lisp snippets, code and
+  # packages
+- Minimal tutorial, REPL-centric:
+  [[http://bzg.fr/learn-emacs-lisp-in-15-minutes.html]]
+  # This tutorial assumes you have it open in Emacs and read, evaluate
+  # and extend it as you go through it.  Very cool, shortest one from
+  # all options listed.
+- More traditional introduction to concepts:
+  [[http://harryrschwartz.com/2014/04/08/an-introduction-to-emacs-lisp.html]]
+  # Inspired by the previous one, however it explains the language
+  # concepts in more detail and is less about interactive usage.
+- Exactly what it says on the tin:
+  http://steve-yegge.blogspot.com/2008/01/emergency-elisp.html
+  # Coming from a different language and don't know how to catch
+  # exceptions or use OOP-like constructs?  Try this one.
+
+* History
+
+** History
+
+  # Roughly adapted from RMS' writings
+- RMS disliked Unix, had the idea to create a completely free OS
+- He started writing his own compiler, didn't like Vi
+- He started writing an extensible editor that was able to do more than a
+  mere text editor would
+- He chose Lisp as the extension language everything apart the
+  fundamentals would be implemented in
+  # Pretty much anything is replacable or can be enhanced, since he
+  # used to be at the MIT AI lab, he chose MacLisp as inspiration
+  # which was also the inspiration for Common Lisp, hence the
+  # conceptual similarities
+- He also made it free to distribute and added a clause that people
+  had to contribute improvements back, way before they were using DVCS
+  # At the moment there's the move to Git as DVCS
+- Later development moved from the cathedral to the bazaar style
+  # After the titular essay by ESR
+
+* Strengths
+
+** Rich runtime
+
+- Lots of Emacs Lisp tooling
+  # Testing, Tracer, Debuggers, Linters, Code coverage, Docs, ...
+- Serialization/Unserialization of XML, HTML, JSON
+- Datetime/Calendar, Color, Unmarshaling
+- File handling, recoding
+- Numerical analysis, graphing
+- Parsers, DBus, Terminal Emulation
+- Wrappers for Mail, IRC, Printing, VCS, GPG, ...
+- Network processes and access/requests
+  # Creation of socket-backed processes, HTTP requests, Mail access
+- Process control
+  # Drive compilers, command interpreters, servers, ...
+- ...
+
+** Event-driven
+
+- Color selection with mouse (vivid-rodent.el)
+  # Concept blatantly stolen from <http://colourco.de/>
+
+** Event loop
+
+- Play back frames with timeout, control playback (flipbook.el)
+  # Go for keyboardcat!
+
+  # Timers are surprisingly more suited than explicitly waiting for a
+  # time to pass, although there's framedrops and GC going on.
+
+** Buffers are powerful
+
+- State visualization (svg-2048.el, svg-2048-animation-demo.el)
+  # Play around a bit, demonstrate animation demo, too
+
+** Complex UI is possible
+
+  # UI isn't only what you see, I'm rather refering to user interfaces
+  # like keyboard input that triggers different actions after wiring
+  # it up to a completely different user interface
+- Trigger evaluation in different buffer with keyboard input (dial.el)
+  # Demonstrate tones with buffer evaluation/REPL first, then execute
+  # them remotely as MIDI keyboard replacement
+- Magit and [[https://github.com/mickeynp/makey][makey]], org-export UI
+  # Both are surprisingly suited for more complex selections of
+  # choices, makey is a library extracted from Magit you can use for
+  # your own hackery
+
+** More productivity
+
+- Access often used functionality in a simpler way (helm-fkeys.el)
+  # This groups commands I use frequently and gives me not only
+  # simpler keybinds, but also jogs my memory
+
+** Better workflow
+
+- Switch window configurations in a simpler way (eyebrowse)
+  # Inspired by Vim's tabs, Ranger's tabs and i3wm workspaces.
+  # Probably the most useful Emacs Lisp code I've written judging by
+  # the Github popularity it received compared to the rest.
+
+** Immediate feedback loop
+
+  # Actually, I lied.  Emacs isn't a text editor.  It's no operating
+  # system either.  No, it's a giant REPL.  Every key you hit is
+  # processed, the appropriate command looked up and executed.  That's
+  # mostly it minus the more difficult parts like aborting execution
+  # on C-g or timers.  So if you use a REPL in Emacs, you're using a
+  # REPL inside a REPL.  Inception!
+
+  # There is a difference between controlling an external REPL from
+  # within Emacs and using the Emacs Lisp tooling for Emacs Lisp
+  # hacking, the extra layer of indirection.  If you're interested in
+  # the design behind Emacs that allows this, read the Emacs Paper
+  # <https://www.gnu.org/software/emacs/emacs-paper.html>.
+- /commence fixing/writing code to make a more practical point/
+  (svg-2048.el)
+  # I've done this change while holding the talk and commited later:
+  # https://github.com/wasamasa/svg-2048/commit/07869ea60aac745f057353f96e3f42907a98e0c1
+
+* Weaknesses
+
+** No APIs / Crufty APIs
+
+- Very little or weird abstraction
+  # Compare ido (select something) to helm (selection framework)
+
+  # Compare auto-complete (pretty popular, spaghetti, buggy) to
+  # company (less popular, clean, exciting new features coming up)
+
+** Speed
+
+- Need to escape to external processes / FFI
+  # Done surprisingly often for completion and such since there's
+  # little overhead in communication with a server on localhost
+- Byte-compilation helps a bit (with macros)
+  # Stuff like js2-mode is only usable with it
+
+** Historical mistakes
+
+- The C codebase is scary
+  # Pseudo-lispy style with C macro abuse
+- Complexity of the display engine
+  # See xdisp.c and `redisplay_internal'
+- No namespaces
+  # Might come though if Nic Ferrier decides to whip them up
+- BZR
+  # Essentially abandoned, thankfully there's the move to Git
+- Weird naming conventions
+  # Windows and Frames, `destructuring-bind', `unwind-protect', ...
+
+** There's still a lot to be fixed
+
+[[./images/fixed.jpg]]
+
+  # Hacks upon hacks upon hacks
+
+  # I shudder at the thought dired is based on the output of `ls
+  # --dired`
+
+* What do?
+
+** Programmers
+
+- Join the Mailing List, hang out on /#emacs/ at Freenode
+  # I'm wasamasa, feel free to ping me any time
+- Improve your Emacs Lisp skills
+- Understand existing code, discuss and question it
+- Write demos to find better approaches to a problem
+  # Without all these steps it will just be lots of complaining and a
+  # few people reinventing things with little feedback.  This is what
+  # we'd want to avoid, despite the proficiency of Emacs hackers.
+
+** Designers & Writers
+
+“Design is about pulling things apart.” - Rich Hickey
+  # Yes, Designer doesn't mean that person is specialized in
+  # manipulating images or designing logos, although these certainly
+  # are desirable qualities to possess.  No, I'm rather refering to
+  # people who enjoy discussing specifications and write their own
+  # APIs.
+
+- [[https://github.com/chrisdone/structured-haskell-mode][Gifcasts]]
+- Clearer documentation
+  # The wiki is no place to host packages Code is no documentation
+  # either
+- Suggest (UI) ideas, discuss them
+- Devise APIs and better abstractions
+  # Same goes as for the previous section.
+
+** Rewrite proponents
+
+See [[http://www.emacswiki.org/emacs/GuileEmacs][Guile]] [[http://git.hcoop.net/?p=bpt/emacs.git][Emacs]]
+
+  # It's the only rewrite that managed to survive and is alive and
+  # kicking! According to its proponents it's now able to run nearly
+  # all Emacs Lisp packages and can turn every supported language into
+  # Emacs Lisp bytecode.  That essentially means you could extend
+  # Emacs in a different language than Emacs Lisp.  Asides from that
+  # Guile offers interesting bindings one could use, such as OpenGL
+  # and Webkit.
+
+** Possible stuff to hack on
+
+  # Here's an excerpt of my list of possible projects, you shall be
+  # able to find your own if you spend enough time using Emacs
+- A “native” torrent client
+- Guile Emacs and things using Guile bindings (graphical browser,
+  video player, OpenGL, ...)
+- dired
+- Window management library
+- Input methods
+- helm
+- dash.el, s.el, f.el, b.el, ...
+- my stuff
+- other people's stuff (see next slide)
+
+** Hackers to collaborate with
+
+  # These guys either produce a lot or have cool packages or do both
+- [[https://github.com/Fuco1][Fuco1]]
+- [[https://github.com/magnars][magnars]]
+- [[https://github.com/skeeto][skeeto]]
+- [[https://github.com/chrisdone][chrisdone]]
+- [[https://github.com/purcell][purcell]]
+- [[https://github.com/thierryvolpiatto][thierryvolpiatto]]
+- [[https://github.com/bbatsov][bbatsov]]
+- [[https://github.com/technomancy][technomancy]]
+- [[https://github.com/dgutov][dgutov]]
+- ...
+
+** Conclusion
+
+- Emacs is pretty cool
+- You should totally learn to mold it to your likings
+- If you do, help out while you're at it
+- There's more than enough to be fixed
+
+** Questions?
+
+“<technomancy> not making sense never stopped an intrepid elisper!”
+

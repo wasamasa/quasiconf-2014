@@ -1,0 +1,68 @@
+* Requirements
+
+I expect you to use Emacs 24.4 and to have =dash.el= installed already
+
+* Examples
+
+** vivid-rodent.el
+
+- Open =vivid-rodent.el=, hit =M-x eval-buffer=
+- Hit =M-x vivid-rodent=, move the mouse around in the buffer that
+  popped up, click to save the color code
+
+** flipbook.el
+
+- Open =flipbook.el=, adjust =flipbook-format-string= to an existing
+  path to the frames you want to play back (first line)
+- Hit =M-x eval-buffer=, then =M-x flipbook=
+- Hit =p= to play or pause, adjust playback with =<= and =>=
+- Hit =h= for more bindings
+
+** svg-2048.el
+
+- Open =svg-2048.el=, hit =M-x eval-buffer=
+- Hit =M-x svg-2048= and play for a bit
+
+** svg-animation-demo.el
+
+- Open =pdata.el=, hit =M-x eval-buffer=
+- Open =svg-animation-demo.el=, hit =M-x eval-buffer=
+- Hit =M-x svg-animation-demo=, hit =p= to move back and forth
+
+** bleeps
+
+- Make sure you have everything set up for Clojure development in
+  Emacs (CIDER and its dependencies need to be installed in Emacs,
+  Leiningen needs to be installed on your system)
+- Run ~lein deps~ to fetch all dependencies of this Clojure project
+- Set up JACK (~pasuspender -- jackd -r -d alsa~ works on my
+  Pulseaudio system)
+- Open =bleeps/src/bleeps/core.clj=, hit =C-c M-j= to attach a REPL
+- Evaluate all top-level forms in =bleeps/src/bleeps/core.clj= with
+  =C-M-x=, starting from the first and going until the last one
+- Switch to the project namespace in the REPL with either =C-c M-n= or
+  ~(ns bleeps.core)~
+- Try playing some sounds in the REPL with something like
+  ~(coin-block)~
+
+** dial.el
+
+- Open =dial.el=, hit =M-x eval-buffer=
+- If you rather want to dial DTMF tones, evaluate the first
+  =dial-mode-alist= form, otherwise the second one
+- Hit =M-x dial=, then hit the keys mapped by the =dial-mode-alist=
+  form you've evaluated
+
+** helm-fkeys.el
+
+- Open =helm-fkeys.el=, hit =M-x eval-buffer=
+- Evaluate the code that was commented out
+- Hit =F1= and demonstrate the shiny menu popping up
+
+** eyebrowse.el
+
+- Open =eyebrowse.el=, hit =M-x eval-buffer=
+- Enable with =M-x eyebrowse-mode=
+- Enable shorthand with =M-: (eyebrowse-setup-opinionated-keys)=
+- Switch window configurations with =M-1..M-9=, change them, switch back
+

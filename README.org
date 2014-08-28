@@ -1,0 +1,35 @@
+* About
+
+I've been at FrOSCon 2013 for the Quasiconf subconference and was
+pretty impressed by the talks given.  However [[https://github.com/DerGuteMoritz][Moritz Heidkamp]], its
+organizer, told me there would most likely not be a Quasiconf 2014
+considering the effort to recruit speakers and that he wouldn't be
+able to organize it next year. Therefore I decided to hold a talk at
+FrOSCon 2014 but didn't know what topic to choose.
+
+In June 2014 [[https://github.com/friemen][Falko Riemenschneider]] took over the organization
+position. I contacted him and decided on a whim to hold a talk about
+Emacs Lisp because it's been the only Lisp dialect I've spent a
+substantial amount of time with and felt confident in sharing my
+knowledge about.  However I didn't want to talk about its technical
+merits and rather demonstrate its possibilities as I've had the
+impression too little of its users spend their time learning and using
+it for practical purposes.  Another thing I've noticed was that there
+is a good amount of problems to solve with Emacs itself, so I decided
+to combine both issues and tackle the talk from a recruitment- and
+marketing-oriented perspective.
+
+Unfortunately there are no recordings of the talk itself, whish is why
+I've bundled up the slides and the code used for the demonstrations
+with another README.org file.  Add a tiny bit of rants about unfixed
+things within Emacs and you should be able to recreate it yourself
+easily. Happy hacking!
+
+* Setup
+
+- Open ~presentation.pdf~ after setting up speakers and the bundled
+  Overtone project and JACK
+- Open an Emacs instance, preferably one that is able to use [[https://github.com/clojure-emacs/cider][CIDER]], be
+  ready to evaluate all buffers coming up
+- ????
+- PROFIT
