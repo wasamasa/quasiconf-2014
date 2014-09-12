@@ -1,6 +1,6 @@
 * Requirements
 
-I expect you to use Emacs 24.4 and to have =dash.el= installed already
+I expect you to use Emacs 24.3 and to have =dash.el= installed already
 
 * Examples
 
