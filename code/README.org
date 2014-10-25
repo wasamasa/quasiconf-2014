@@ -33,8 +33,10 @@ I expect you to use Emacs 24.3 and to have =dash.el= installed already
 
 - Make sure you have everything set up for Clojure development in
   Emacs (CIDER and its dependencies need to be installed in Emacs,
-  Leiningen needs to be installed on your system)
-- Run ~lein deps~ to fetch all dependencies of this Clojure project
+  Leiningen needs to be installed on your system) and have the
+  =supercollider= package installed via your system's package manager
+- Run ~lein deps~ in =code/bleeps= to fetch all dependencies of this
+  Clojure project
 - Set up JACK (~pasuspender -- jackd -r -d alsa~ works on my
   Pulseaudio system)
 - Open =bleeps/src/bleeps/core.clj=, hit =C-c M-j= to attach a REPL
